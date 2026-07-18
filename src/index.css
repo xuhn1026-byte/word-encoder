@@ -1,0 +1,226 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* 艺术 zine × 手账 主题 */
+    --background: 34 56% 93%; /* #F7EDE2 奶油纸 */
+    --foreground: 265 33% 36%; /* #563E79 深紫 */
+    --card: 0 0% 100%;
+    --card-foreground: 265 33% 36%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 265 33% 36%;
+    --primary: 172 19% 57%; /* #84A59D 鼠尾草绿 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 10 76% 86%; /* #F5CAC3 珊瑚粉 */
+    --secondary-foreground: 265 33% 36%;
+    --muted: 34 30% 88%;
+    --muted-foreground: 265 20% 50%;
+    --accent: 37 100% 75%; /* #FFCE80 暖黄 */
+    --accent-foreground: 265 33% 36%;
+    --destructive: 4 82% 73%; /* #F28482 鲑鱼红 */
+    --destructive-foreground: 0 0% 100%;
+    --border: 265 33% 36%;
+    --input: 265 33% 36%;
+    --ring: 172 19% 57%;
+    --radius: 0.625rem;
+    --sidebar-background: 34 56% 93%;
+    --sidebar-foreground: 265 33% 36%;
+    --sidebar-primary: 172 19% 57%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 10 76% 86%;
+    --sidebar-accent-foreground: 265 33% 36%;
+    --sidebar-border: 265 33% 36%;
+    --sidebar-ring: 172 19% 57%;
+    /* 动画时序常量 */
+    --ease-primary: cubic-bezier(0.62, 0.05, 0.01, 0.99);
+    --dur-main: 0.735s;
+    --dur-fast: 0.35s;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-cream text-grape font-body;
+    position: relative;
+  }
+  /* 奶油纸噪点纹理（SVG feTurbulence，128px tile） */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)' opacity='0.16'/%3E%3C/svg%3E");
+    background-size: 128px 128px;
+  }
+  #root {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+@layer components {
+  /* zine 风点状边框，hover 变实线 */
+  .zine-border {
+    border: 1px dotted #563e79;
+    transition: border-style var(--dur-fast) var(--ease-primary);
+  }
+  .zine-border:hover {
+    border-style: solid;
+  }
+
+  /* 点状下划线链接 */
+  .link-dotted {
+    text-decoration-line: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 0.05rem;
+    text-underline-offset: 4px;
+  }
+
+  /* 荧光笔高亮：文字背后垫暖黄半透明斜角块 */
+  .hl {
+    background-image: linear-gradient(
+      100deg,
+      rgba(255, 206, 128, 0) 0.5%,
+      rgba(255, 206, 128, 0.85) 3%,
+      rgba(255, 206, 128, 0.6) 96%,
+      rgba(255, 206, 128, 0) 99.5%
+    );
+    padding: 0.05em 0.3em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  /* 方法 pill tag：固定三色 */
+  .pill-homophone {
+    background-color: #f5cac3;
+    color: #563e79;
+  }
+  .pill-roots {
+    background-color: #84a59d;
+    color: #ffffff;
+  }
+  .pill-scene {
+    background-color: #ffce80;
+    color: #563e79;
+  }
+
+  /* 图钉 / 方案卡：白底、圆角 24px、柔和投影 */
+  .pin-card {
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px -12px rgba(86, 62, 121, 0.35);
+  }
+
+  /* 顶部圆形图钉（径向渐变小球） */
+  .pushpin {
+    width: 26px;
+    height: 26px;
+    border-radius: 9999px;
+    background: radial-gradient(circle at 35% 30%, #ffb3ab 0%, #f28482 45%, #c95b59 100%);
+    box-shadow:
+      0 3px 6px rgba(86, 62, 121, 0.4),
+      inset -2px -3px 5px rgba(0, 0, 0, 0.15),
+      inset 2px 3px 4px rgba(255, 255, 255, 0.5);
+  }
+  .pushpin-sage {
+    background: radial-gradient(circle at 35% 30%, #b7d0cb 0%, #84a59d 45%, #5d7d76 100%);
+  }
+  .pushpin-sunny {
+    background: radial-gradient(circle at 35% 30%, #ffe3ae 0%, #ffce80 45%, #d9a44e 100%);
+  }
+
+  /* 贴纸徽章：白描边 + 深色描边、轻微旋转、卡通厚度 */
+  .sticker {
+    display: inline-block;
+    background: #f28482;
+    color: #fff;
+    border: 3px solid #ffffff;
+    outline: 2px solid hsl(0, 3%, 15%);
+    border-radius: 9999px;
+    box-shadow: 0 6px 14px -6px rgba(86, 62, 121, 0.5);
+    transform: rotate(-3deg);
+  }
+
+  /* 方案详情展开：grid-template-rows 0fr → 1fr 过渡 */
+  .reveal {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--dur-fast) var(--ease-primary);
+  }
+  .reveal > div {
+    overflow: hidden;
+  }
+  .reveal.open {
+    grid-template-rows: 1fr;
+  }
+}
+
+@layer utilities {
+  /* hover 摇摆（zine 风标志细节） */
+  .wiggle-hover:hover {
+    animation: wiggle 0.3s steps(2, end) infinite;
+  }
+  @keyframes wiggle {
+    from {
+      transform: rotate(-1.25deg);
+    }
+    to {
+      transform: rotate(1.25deg);
+    }
+  }
+
+  /* loading 三圆点 */
+  .span-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background-color: #563e79;
+    animation: spanDot 1.25s linear infinite;
+  }
+  @keyframes spanDot {
+    0%,
+    60%,
+    100% {
+      transform: translateY(0);
+    }
+    30% {
+      transform: translateY(-6px);
+    }
+  }
+
+  /* 特大英文单词展示字体 */
+  .word-display {
+    font-family: 'Dela Gothic One', 'Arial Black', Impact, sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1.05;
+    letter-spacing: 0.01em;
+  }
+
+  /* 抽认卡 3D 翻面 */
+  .flip-scene {
+    perspective: 1200px;
+  }
+  .flip-inner {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform var(--dur-main) var(--ease-primary);
+  }
+  .flip-inner.flipped {
+    transform: rotateY(180deg);
+  }
+  .flip-face {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .flip-back {
+    transform: rotateY(180deg);
+  }
+}
