@@ -1,73 +1,29 @@
-# React + TypeScript + Vite
+# 单词编码记忆系统（Word Encoder）
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+帮助中文用户通过「编码记忆法」背英语单词的本地网页应用，艺术 zine × 手账风设计。
 
-Currently, two official plugins are available:
+线上地址：<https://xuhn1026-byte.github.io/word-encoder/>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 功能
 
-## React Compiler
+- **编码工坊**：输入英文单词，生成 3 套编码方案（谐音法 / 词根词缀 / 场景联想），配 AI 或本地演示记忆插图，一键存入词库
+- **我的词库**：记忆图钉卡片墙（localStorage 持久化），支持搜索、按方法筛选、删除、导入/导出 JSON
+- **复习**：艾宾浩斯 8 级间隔重复，翻面抽认卡 + 忘记/模糊/记住三档自评，统计今日待复习与连续学习天数
+- **新手词包**：内置高考 / 四级 / 六级 / 考研 4 个词包共 160 个高频词，本地批量编码一键入库
+- **双模式**：配置 OpenAI 兼容接口（设置 Dialog）走 AI 生成；未填 Key 自动使用本地演示编码器，开箱即用
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 技术栈
 
-## Expanding the ESLint configuration
+React 19 + TypeScript + Vite 7 + Tailwind CSS 3.4 + shadcn/ui
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 本地开发
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev      # 开发服务器
+npm run build    # 生产构建（输出 dist/）
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 部署
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+构建产物推送到 `gh-pages` 分支，由 GitHub Pages 托管（`vite.config.ts` 已配置 `base: './'`）。
